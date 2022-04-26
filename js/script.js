@@ -53,6 +53,8 @@ function play() {
         }
     }, 1000)
 
+    results.innerText = '';
+    
 }
 
 function cellGenerator(){
@@ -122,11 +124,25 @@ function checkNumbers(){
             correctNumbers.push(guessedNumbers[i]);
         }
     }
-    console.log(correctNumbers);
+    console.log('Numeri indovinati', correctNumbers);
 
-    results.innerText = `Hai indovinato ${indovinati} numeri! ${correctNumbers.length}`;
+    for(let i = 0; i < correctNumbers.length; i++){
 
-    return correctNumbers;
+        if(correctNumbers.length === 0){   
+    
+            results.innerText = 'Non hai indovinato nessun numero! :(';
+    
+        } else if(correctNumbers.length === 1) {
+    
+            results.innerText = `Hai indovinato 1 numero! Il numero ${correctNumbers}`;
+    
+        } else if(correctNumbers.length >= 2){
+    
+            results.innerText = `Hai indovinato ${correctNumbers.length} numeri! I numeri  ${correctNumbers}`;
+    
+        }
+    }
+
 }
 
 
