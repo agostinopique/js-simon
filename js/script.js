@@ -13,3 +13,120 @@ Dopo che sono stati inseriti i 5 numeri, il software dice quanti e quali dei num
     6. Mostrare le casistiche di vittoria o perdita;
  */
 
+let time = 5;
+
+let simonNumbers = [];
+
+let guessedNumbers = [];
+
+document.getElementById('playBtn').addEventListener('click', play);
+
+const results = document.getElementById('results');
+
+// const countDown = setInterval(simonTimer, 1000);
+
+function play() {
+    this.innerHTML = 'RESET';
+
+    const section = document.querySelector('div.container');
+
+    section.innerHTML = '';
+
+    simonNumbers = [];
+
+    guessedNumbers = [];
+
+    for(let i = 0; i < 5; i++){
+        
+        section.append(cellGenerator());
+        
+    }
+
+    const timer = setInterval(function(){
+        console.log(time--);
+        if(time < 0){
+            clearInterval(timer);
+            section.innerHTML = '';
+            console.log('FINE');
+            time = 5;
+            indovinaNumeri();
+        }
+    }, 1000)
+
+}
+
+function cellGenerator(){
+    const sq = document.createElement('div');
+
+    sq.className = 'cell';
+    sq.classList.add('border', 'border-white');
+
+    let randomNum = randomNumber(1, 10);
+
+    sq.innerText = randomNum;
+
+
+    if(simonNumbers.includes(randomNum)){
+
+        let flag = false;
+    
+        while (!flag) {
+            randomNum = randomNumber(1, 10);
+            if(!simonNumbers.includes(randomNum)){
+                flag = true;
+                simonNumbers.push(randomNum);
+            }
+        }
+    } else {
+        simonNumbers.push(randomNum);
+    }
+
+    console.log('Estratti', simonNumbers);
+    return sq;
+
+}
+
+/**
+ * 
+ * @param {number} min 
+ * @param {number} max 
+ */
+function randomNumber(min, max){
+
+    return Math.floor(Math.random() * (max - min + 1) + min)
+
+}
+
+function indovinaNumeri(){
+
+
+    for(let i = 0; i < 5; i++){
+        let tentativo = parseInt(prompt(`Indovina ${5 - i} numeri!`));
+            
+        guessedNumbers.push(tentativo);
+        console.log('Utente', guessedNumbers);
+    } 
+
+    checkNumbers();
+
+}
+
+
+function checkNumbers(){
+    let indovinati = 0;
+    let correctNumbers = [];
+
+    for(let i = 0; i < guessedNumbers.length; i++){
+        if(simonNumbers.includes(guessedNumbers[i]) ){
+            indovinati++;
+            correctNumbers.push(guessedNumbers[i]);
+        }
+    }
+    console.log(correctNumbers);
+
+    results.innerText = `Hai indovinato ${indovinati} numeri! ${correctNumbers.length}`;
+
+    return correctNumbers;
+}
+
+
